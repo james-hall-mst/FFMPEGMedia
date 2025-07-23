@@ -8,11 +8,16 @@
 #include "FFMPEGFrameQueue.h"
 #include "FFMPEGClock.h"
 
+extern "C"
+{
+	#include "libavformat/avformat.h"
+}
 
 #include "CoreTypes.h"
 #include "Containers/Array.h"
 #include "Containers/UnrealString.h"
 #include "Internationalization/Text.h"
+#include "IMediaEventSink.h"
 #include "IMediaSamples.h"
 #include "IMediaTracks.h"
 #include "IMediaControls.h"

@@ -122,7 +122,7 @@ int FFMPEGDecoder::DecodeFrame( AVFrame *frame, AVSubtitle *sub) {
         }
     }
 
-    return ret;
+    //return ret;
 }
 
 void FFMPEGDecoder::SetDecoderReorderPts ( int pts ) {

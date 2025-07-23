@@ -1088,7 +1088,7 @@ TRangeSet<float> FFFMPEGMediaTracks::GetSupportedRates(EMediaRateThinning Thinni
     //Result.Add(TRange<float>(PlayerItem.canPlayFastReverse ? -8.0f : -1.0f, 0.0f));
     //Result.Add(TRange<float>(0.0f, PlayerItem.canPlayFastForward ? 8.0f : 0.0f));
 
-    Result.Add(TRange<float>(0.0f, 1.0f));
+    Result.Add(TRange<float>(0.0f, 10.0f));
 
     return Result;
 }
@@ -1116,7 +1116,7 @@ bool FFFMPEGMediaTracks::SetRate(float Rate) {
     CurrentRate = Rate;
 
 
-    if (bPrerolled) {
+    //if (bPrerolled) {
         if (FMath::IsNearlyZero(Rate))
         {
             CurrentState = EMediaState::Paused;
@@ -1127,7 +1127,7 @@ bool FFFMPEGMediaTracks::SetRate(float Rate) {
             CurrentState = EMediaState::Playing;
             DeferredEvents.Enqueue(EMediaEvent::PlaybackResumed);
         }
-    }
+    //}
 
     return true;
 }
@@ -1146,7 +1146,7 @@ bool FFFMPEGMediaTracks::AddStreamToTracks(uint32 StreamIndex, bool IsVideoDevic
     AVMediaType MediaType = CodecParams->codec_type;
     
     if ( MediaType != AVMEDIA_TYPE_VIDEO && MediaType != AVMEDIA_TYPE_AUDIO && MediaType != AVMEDIA_TYPE_SUBTITLE) {
-        UE_LOG(LogFFMPEGMedia, Verbose, TEXT("Tracks %p: Unsupported major type %s of stream %i"), this,av_get_media_type_string(MediaType), StreamIndex);
+        // UE_LOG(LogFFMPEGMedia, Verbose, TEXT("Tracks %p: Unsupported major type %s of stream %i"), this,av_get_media_type_string(MediaType), StreamIndex);
         OutInfo += TEXT("\tUnsupported stream type\n");
 
         return false;
@@ -2386,10 +2386,10 @@ int FFFMPEGMediaTracks::AudioDecodeFrame(FTimespan& time, FTimespan& duration) {
             dec_channel_layout, (AVSampleFormat)af->GetFrame()->format, af->GetFrame()->sample_rate,
             0, NULL);
         if (!swrContext || swr_init(swrContext) < 0) {
-            UE_LOG(LogFFMPEGMedia, Error, 
-                TEXT("Cannot create sample rate converter for conversion of %d Hz %s %d channels to %d Hz %s %d channels!"),
-                af->GetFrame()->sample_rate, UTF8_TO_TCHAR( av_get_sample_fmt_name((AVSampleFormat)af->GetFrame()->format)), af->GetFrame()->channels,
-                targetAudio.SampleRate,  UTF8_TO_TCHAR(av_get_sample_fmt_name(targetAudio.Format)), targetAudio.NumChannels);
+            // UE_LOG(LogFFMPEGMedia, Error, 
+            //     TEXT("Cannot create sample rate converter for conversion of %d Hz %s %d channels to %d Hz %s %d channels!"),
+            //     af->GetFrame()->sample_rate, UTF8_TO_TCHAR( av_get_sample_fmt_name((AVSampleFormat)af->GetFrame()->format)), af->GetFrame()->channels,
+            //     targetAudio.SampleRate,  UTF8_TO_TCHAR(av_get_sample_fmt_name(targetAudio.Format)), targetAudio.NumChannels);
             swr_free(&swrContext);
             return -1;
         }
@@ -2806,8 +2806,8 @@ int FFFMPEGMediaTracks::VideoThread() {
         }
     }
 
-    av_frame_free(&frame);
-    return 0;
+    //av_frame_free(&frame);
+    //return 0;
 }
 
 
