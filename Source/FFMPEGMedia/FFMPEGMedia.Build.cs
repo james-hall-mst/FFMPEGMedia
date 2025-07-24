@@ -139,6 +139,7 @@ public class FFMPEGMedia : ModuleRules
 				"Engine",
 				"MediaUtils",
 				"RenderCore",
+				"Settings",
 				"FFMPEGMediaFactory",
 				"Projects",
 			});

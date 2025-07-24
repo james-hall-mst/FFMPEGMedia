@@ -30,7 +30,7 @@ enum class ERTSPTransport : uint8 {
 /**
  * Settings for the WmfMedia plug-in.
  */
-UCLASS(config=Engine)
+UCLASS(config=GameUserSettings, defaultconfig)
 class FFMPEGMEDIAFACTORY_API UFFMPEGMediaSettings
 	: public UObject
 {

@@ -7,7 +7,11 @@
 
 #include "IFFMPEGMediaModule.h"
 #include "Core.h"
+#include "FFMPEGMediaSettings.h"
 #include "Interfaces/IPluginManager.h"
+
+#include "ISettingsModule.h"
+#include "ISettingsSection.h"
 
 #include "IMediaModule.h"
 #include "Modules/ModuleInterface.h"
@@ -32,6 +36,7 @@ extern  "C" {
 
 DEFINE_LOG_CATEGORY(LogFFMPEGMedia);
 
+#define LOCTEXT_NAMESPACE "FFMPEGMediaModule"
 
 /**
  * Implements the FFMPEGMedia module.
@@ -155,8 +160,40 @@ public:
 
 	//~ IModuleInterface interface
 
+	bool HandleSettingsSaved()
+    {
+    	UFFMPEGMediaSettings* Settings = GetMutableDefault<UFFMPEGMediaSettings>();
+    	bool ResaveSettings = true;
+    	if (ResaveSettings)
+    	{
+    		Settings->SaveConfig();
+    	}
+
+    	//OnUserInterfaceSettingsChanged.Broadcast();
+	
+    	return true;
+    }
+	
 	virtual void StartupModule() override
 	{
+
+    	if (ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))
+    	{
+    		ISettingsSectionPtr SettingsSection = SettingsModule->RegisterSettings(
+				"Project",
+				"VersoLive",
+				"FFMPEG",
+				LOCTEXT("VersoLiveUISettingsName", "FFMPEG Settings"),
+				LOCTEXT("VersoLiveUISettingsDescription", "FFMPEG Media settings"),
+				GetMutableDefault<UFFMPEGMediaSettings>()
+			);
+
+    		if (SettingsSection.IsValid())
+    		{
+    			SettingsSection->OnModified().BindRaw(this, &FFFMPEGMediaModule::HandleSettingsSaved);
+    		}
+    	}
+    	
 #if PLATFORM_ANDROID
         UE_LOG(LogFFMPEGMedia, Verbose, TEXT("Avoid load the libraries once again on android"));
 #else
@@ -287,5 +324,6 @@ private:
 	bool Initialized;
 };
 
+#undef LOCTEXT_NAMESPACE
 
 IMPLEMENT_MODULE(FFFMPEGMediaModule, FFMPEGMedia);

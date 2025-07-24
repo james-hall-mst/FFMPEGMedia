@@ -451,7 +451,7 @@ void FFFMPEGMediaTracks::TickInput(FTimespan DeltaTime, FTimespan Timecode) {
     TargetTime = Timecode;
 
     double time = Timecode.GetTotalSeconds();
-    UE_LOG(LogFFMPEGMedia, Verbose, TEXT("Tracks: %p: TimeCode %.3f"), this, (float)time);
+    UE_LOG(LogFFMPEGMedia, Verbose, TEXT("Tracks: %p: TimeCode %.3f"), this, time);
 }
 
 
