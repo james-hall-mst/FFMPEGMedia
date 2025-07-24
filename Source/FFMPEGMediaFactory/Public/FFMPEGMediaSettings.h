@@ -7,7 +7,6 @@
 
 #include "FFMPEGMediaSettings.generated.h"
 
-
 UENUM()
 enum class ESynchronizationType : uint8 {
     AudioMaster = 0,
@@ -76,4 +75,43 @@ public:
 
 	UPROPERTY(config, EditAnywhere, Category = Media)
 	ESynchronizationType SyncType;
+
+
+public:
+	void GetSyncTypes(TArray<FName>& OutNames)
+	{
+		if (UEnum* EnumPtr = StaticEnum<ESynchronizationType>())
+		{
+			int32 NumEnum = EnumPtr->NumEnums();
+			for (int32 i = 0; i < NumEnum; ++i)
+			{
+				ESynchronizationType Type = static_cast<ESynchronizationType>(EnumPtr->GetValueByIndex(i));
+
+				if ((int64)Type == EnumPtr->GetMaxEnumValue())
+				{
+					continue;
+				}
+				
+				OutNames.Add(EnumPtr->GetNameByIndex(i));
+			}
+		}
+	}
+
+	void GetTransportTypes(TArray<FName>& OutNames)
+	{
+		if (UEnum* EnumPtr = StaticEnum<ERTSPTransport>())
+		{
+			int32 NumEnum = EnumPtr->NumEnums();
+			for (int32 i = 0; i < NumEnum; ++i)
+			{
+				ERTSPTransport Type = static_cast<ERTSPTransport>(EnumPtr->GetValueByIndex(i));
+				if ((int64)Type == EnumPtr->GetMaxEnumValue())
+				{
+					continue;
+				}
+				
+				OutNames.Add(EnumPtr->GetNameByIndex(i));
+			}
+		}
+	}
 };
