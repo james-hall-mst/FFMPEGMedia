@@ -10,6 +10,7 @@
 #include "UObject/Class.h"
 
 #include "FFMPEGMediaTracks.h"
+#include "FFMPEGMediaSession.h"
 #include "FFMPEGMediaSettings.h"
 
 extern  "C" {
@@ -28,8 +29,12 @@ FFFMPEGMediaPlayer::FFFMPEGMediaPlayer(IMediaEventSink& InEventSink)
 	:
       EventSink(InEventSink)
 	, Tracks(MakeShared<FFFMPEGMediaTracks, ESPMode::ThreadSafe>())
+    , Session(MakeShared<FFFMPEGMediaSession, ESPMode::ThreadSafe>())
 {
 	check(Tracks.IsValid());
+    check(Session.IsValid());
+
+    Session->SetTracks(Tracks);
     
     IOContext = nullptr;
     FormatContext = nullptr;

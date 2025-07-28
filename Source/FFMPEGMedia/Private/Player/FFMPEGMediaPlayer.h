@@ -5,7 +5,6 @@
 #include "FFMPEGMediaPrivate.h"
 
 
-
 #include "Containers/UnrealString.h"
 #include "Containers/Queue.h"
 #include "IMediaCache.h"
@@ -13,10 +12,9 @@
 #include "IMediaView.h"
 #include "Misc/Timespan.h"
 
-
 class FFFMPEGMediaTracks;
+class FFMPEGMediaSession;
 class IMediaEventSink;
-
 
 struct AVIOContext;
 struct AVFormatContext;
@@ -96,6 +94,7 @@ private:
 	
 	/** Media streams collection. */
 	TSharedPtr<FFFMPEGMediaTracks, ESPMode::ThreadSafe> Tracks;
+	TSharedPtr<FFMPEGMediaSession, ESPMode::ThreadSafe> Session;
 
     /** FFMPEG Callbacks */
     /** Returns 1 when we would like to stop the application */
