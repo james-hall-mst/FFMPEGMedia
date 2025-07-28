@@ -2,15 +2,14 @@
 
 #include "FFMPEGMediaPlayer.h"
 
-
 #include "Async/Async.h"
 #include "IMediaEventSink.h"
 #include "IMediaOptions.h"
 #include "Misc/Optional.h"
 #include "UObject/Class.h"
 
-#include "FFMPEGMediaTracks.h"
 #include "FFMPEGMediaSession.h"
+#include "FFMPEGMediaTracks.h"
 #include "FFMPEGMediaSettings.h"
 
 extern  "C" {
@@ -58,6 +57,7 @@ void FFFMPEGMediaPlayer::Close()
 		return;
 	}
 
+    Session->Shutdown();
     
 	// reset player
 	stopped = true;

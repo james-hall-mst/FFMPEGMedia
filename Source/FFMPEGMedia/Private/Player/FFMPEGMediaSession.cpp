@@ -59,7 +59,22 @@ bool FFFMPEGMediaSession::SetRate(float Rate)
 }
 #pragma endregion
 
+FFFMPEGMediaSession::FFFMPEGMediaSession()
+	: FormatContext(nullptr)
+{
+}
+
 void FFFMPEGMediaSession::SetTracks(TSharedPtr<FFFMPEGMediaTracks, ESPMode::ThreadSafe> InTracks)
 {
 	Tracks = InTracks;
+}
+
+bool FFFMPEGMediaSession::Initialize(bool LowLatency)
+{
+	return false;
+}
+
+void FFFMPEGMediaSession::Shutdown()
+{
+	
 }
